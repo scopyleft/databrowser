@@ -21,3 +21,12 @@ efficiently your data while protecting your privacy without technical skills.
 
 More informations and hosting services on:
 http://cozycloud.cc
+
+# Definition of done
+
+* publicly available at `https://github.com/scopyleft/databrowser`
+* installable on a cozy server from `git://github.com/scopyleft/databrowser.git`
+* languages: [coffeescript](http://coffeescript.org/), [jade](http://jade-lang.com/) and [stylus](http://learnboost.github.io/stylus/)
+* ui: keep existing colors from cozy-todo app
+* fonts: keep existing fonts from cozy-todo app
+* target: Firefox 22, Chrome 27
