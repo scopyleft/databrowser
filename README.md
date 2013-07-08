@@ -1,15 +1,14 @@
 # Description
 
-Cozy Template is a template project to start quickly your own application. Just
-fork it and code while focusing only on your features !
+Data browser allows you to browse your data stored on the Cozy platform.
 
 # Run
 
 Clone this repository, install dependencies and run server (it requires Node.js
 and Coffee-script)
     
-    git clone git://github.com/mycozycloud/cozy-template.git
-    cd cozy-template
+    git clone git://github.com/scopyleft/databrowser.git
+    cd databrowser
     npm install
     coffee server
 
