@@ -343,7 +343,7 @@ window.require.register("views/templates/home", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="layout-container"><div id="nav"><h2>Data browser\'s sidebar</h2></div><div id="content"><h1>Data browser</h1><h2>Browse your data by document types, tags and keywords.</h2><ul><li><a href="https://github.com/scopyleft/databrowser">Repository of the app</a></li></ul></div></div>');
+  buf.push('<div class="layout-container"><div id="nav"><h4>Your data types</h4><ul><li><a href="#" title="Doctype 1 infos">doctype 1</a></li><li><a href="#" title="Doctype 2 infos">doctype 2</a></li><li><a href="#" title="Doctype 3 infos">doctype 3</a></li></ul></div><div id="content"><h1>Data browser</h1><h2>Doctype 1</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul><h2>Doctype 2</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul></div></div>');
   }
   return buf.join("");
   };
