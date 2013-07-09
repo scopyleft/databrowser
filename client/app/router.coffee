@@ -17,6 +17,7 @@ module.exports = class Router extends Backbone.Router
         doctypeView.populateData doctypeId
         doctypeView.render()
 
+    # Routes below are not in use for now
     documents: (doctypeId) ->
         documentsCollection = new views.DocumentsCollection()
         documentsCollection.render()

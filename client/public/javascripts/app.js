@@ -112,7 +112,7 @@ window.require.register("collections/documents", function(exports, require, modu
       DocumentCollection.__super__.constructor.call(this, {
         id: this.doctypeId
       }, this.options);
-      this.url = "databrowser/" + this.doctypeId + "/tasks/";
+      this.url = "databrowser/#doctype/" + this.doctypeId + "/documents/";
       console.log(this.url);
     }
 
@@ -323,7 +323,7 @@ window.require.register("models/doctype", function(exports, require, module) {
     }
 
     DocType.prototype.url = function() {
-      return "doctype/" + this.id;
+      return "databrowser/#doctype/" + this.id;
     };
 
     return DocType;
@@ -347,7 +347,7 @@ window.require.register("models/document", function(exports, require, module) {
     }
 
     Document.prototype.url = function() {
-      return "documents/" + this.id;
+      return "databrowser/#doctype/" + this.doctypeId + "/documents/" + this.id;
     };
 
     return Document;
