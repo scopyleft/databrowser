@@ -12,26 +12,26 @@ class exports.HomeView extends BaseView
     el: 'body.application'
     template: require('./templates/home')
 
-    constructor: ->
-        @doctypes = new DocTypeCollection()
-        super()
-
     afterRender: ->
-        console.log "write more code here !"
-        console.log @doctypes.toJSON()
+        @$dt = @dt = $("#doctypes")
+        @dt.html null
+        @doctypes = new DocTypeCollection()
+        @doctypes.fetch
+            success: (data) =>
+                for list in data.models
+                    @addDoctypeLine list.id
+
+    addDoctypeLine: (doctype) ->
+        @dt.append require('./templates/doctype')(doctype: doctype)
 
 
 # Displaying a given doctype and associated documents
 class exports.DoctypeView extends BaseView
 
     el: 'body.application'
-    template: require('./templates/doctype')
 
-    afterRender: ->
-        console.log "write more code here !"
-
-    populateData: (id) ->
-        console.log id
+    populateData: (doctype) ->
+        console.log doctype
 
 
 # Displaying a collection of documents once filtered

@@ -13,4 +13,3 @@ class exports.DocTypeCollection extends Backbone.Collection
 
     parse: (response) ->
         response.rows
-        console.log response.rows

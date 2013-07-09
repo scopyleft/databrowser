@@ -3,10 +3,9 @@
 class exports.DocType extends Backbone.Model
 
     # Copy task properties to current model.
-    constructor: (type) ->
+    constructor: (id) ->
         super
-
-        @[property] = type[property] for property of type
+        @id = id
 
     url: ->
         "doctypes/#{@id}"
