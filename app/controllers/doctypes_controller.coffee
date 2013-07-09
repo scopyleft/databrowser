@@ -16,5 +16,15 @@ returnDoctypes = (err, doctypes) ->
 
 
 action 'all', ->
-    client.post 'request/task/all/', {}, (error, request, response) ->
+    doctypes = ["alarm", "album", "application", "attachment", "bookmark",
+        "contact", "cozyinstance", "feed", "folder", "logmessage", "mail",
+        "mailbox", "mailfolder", "mailtobe", "note", "notification", "param",
+        "photo", "task", "todolist", "tree", "user"]
+    returnDoctypes null, doctypes
+
+
+action 'show', ->
+    doctype = params.doctype
+    client.post 'request/'+doctype+'/all/', {}, (error, request, response) ->
+        console.log response
         returnDoctypes error, response
