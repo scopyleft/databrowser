@@ -10,3 +10,6 @@ class exports.DocumentCollection extends Backbone.Collection
 
         @url = "databrowser/#doctype/#{@doctypeId}/documents/"
         console.log @url
+
+    parse: (response) ->
+        response.rows

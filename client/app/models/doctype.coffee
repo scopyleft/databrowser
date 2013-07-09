@@ -10,3 +10,7 @@ class exports.DocType extends Backbone.Model
 
     url: ->
         "databrowser/#doctype/#{@id}"
+
+    # because the server sends a list on model/:id
+    parse: (data) ->
+        return data.rows[0] if data.rows

@@ -1,5 +1,6 @@
 BaseView = require '../lib/base_view'
 ViewCollection = require '../lib/view_collection'
+{DocTypeCollection} = require "../collections/doctypes"
 {DocType} = require "../models/doctype"
 {DocumentCollection} = require "../collections/documents"
 {Document} = require "../models/document"
@@ -10,6 +11,10 @@ class exports.HomeView extends BaseView
 
     el: 'body.application'
     template: require('./templates/home')
+
+    constructor: ->
+        @doctypes = new DocTypeCollection()
+        super()
 
     afterRender: ->
         console.log "write more code here !"

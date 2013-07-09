@@ -6,7 +6,7 @@ module.exports = class Router extends Backbone.Router
         '': 'home'
         'doctype/:doctypeId': 'doctype'
         'doctype/:doctypeId/documents/': 'documents'
-        'doctype/:doctypeId/documents/:documentId': 'document'
+        'doctype/:doctypeId/document/:documentId': 'document'
 
     home: ->
         homeView = new views.HomeView()

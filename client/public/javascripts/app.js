@@ -93,6 +93,35 @@ window.require.register("application", function(exports, require, module) {
   };
   
 });
+window.require.register("collections/doctypes", function(exports, require, module) {
+  var DocType,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  DocType = require("../models/doctype").DocType;
+
+  exports.DocTypeCollection = (function(_super) {
+    __extends(DocTypeCollection, _super);
+
+    DocTypeCollection.prototype.model = DocType;
+
+    function DocTypeCollection(view, options) {
+      this.view = view;
+      this.options = options;
+      DocTypeCollection.__super__.constructor.call(this, this.options);
+      this.url = "databrowser/#doctype/";
+      console.log(this.url);
+    }
+
+    DocTypeCollection.prototype.parse = function(response) {
+      return response.rows;
+    };
+
+    return DocTypeCollection;
+
+  })(Backbone.Collection);
+  
+});
 window.require.register("collections/documents", function(exports, require, module) {
   var Document,
     __hasProp = {}.hasOwnProperty,
@@ -115,6 +144,10 @@ window.require.register("collections/documents", function(exports, require, modu
       this.url = "databrowser/#doctype/" + this.doctypeId + "/documents/";
       console.log(this.url);
     }
+
+    DocumentCollection.prototype.parse = function(response) {
+      return response.rows;
+    };
 
     return DocumentCollection;
 
@@ -326,6 +359,12 @@ window.require.register("models/doctype", function(exports, require, module) {
       return "databrowser/#doctype/" + this.id;
     };
 
+    DocType.prototype.parse = function(data) {
+      if (data.rows) {
+        return data.rows[0];
+      }
+    };
+
     return DocType;
 
   })(Backbone.Model);
@@ -348,6 +387,12 @@ window.require.register("models/document", function(exports, require, module) {
 
     Document.prototype.url = function() {
       return "databrowser/#doctype/" + this.doctypeId + "/documents/" + this.id;
+    };
+
+    Document.prototype.parse = function(data) {
+      if (data.rows) {
+        return data.rows[0];
+      }
     };
 
     return Document;
@@ -374,7 +419,7 @@ window.require.register("router", function(exports, require, module) {
       '': 'home',
       'doctype/:doctypeId': 'doctype',
       'doctype/:doctypeId/documents/': 'documents',
-      'doctype/:doctypeId/documents/:documentId': 'document'
+      'doctype/:doctypeId/document/:documentId': 'document'
     };
 
     Router.prototype.home = function() {
@@ -408,13 +453,15 @@ window.require.register("router", function(exports, require, module) {
   
 });
 window.require.register("views/app_view", function(exports, require, module) {
-  var BaseView, DocType, Document, DocumentCollection, ViewCollection, _ref, _ref1, _ref2, _ref3,
+  var BaseView, DocType, DocTypeCollection, Document, DocumentCollection, ViewCollection, _ref, _ref1, _ref2,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   BaseView = require('../lib/base_view');
 
   ViewCollection = require('../lib/view_collection');
+
+  DocTypeCollection = require("../collections/doctypes").DocTypeCollection;
 
   DocType = require("../models/doctype").DocType;
 
@@ -425,14 +472,14 @@ window.require.register("views/app_view", function(exports, require, module) {
   exports.HomeView = (function(_super) {
     __extends(HomeView, _super);
 
-    function HomeView() {
-      _ref = HomeView.__super__.constructor.apply(this, arguments);
-      return _ref;
-    }
-
     HomeView.prototype.el = 'body.application';
 
     HomeView.prototype.template = require('./templates/home');
+
+    function HomeView() {
+      this.doctypes = new DocTypeCollection();
+      HomeView.__super__.constructor.call(this);
+    }
 
     HomeView.prototype.afterRender = function() {
       return console.log("write more code here !");
@@ -446,8 +493,8 @@ window.require.register("views/app_view", function(exports, require, module) {
     __extends(DoctypeView, _super);
 
     function DoctypeView() {
-      _ref1 = DoctypeView.__super__.constructor.apply(this, arguments);
-      return _ref1;
+      _ref = DoctypeView.__super__.constructor.apply(this, arguments);
+      return _ref;
     }
 
     DoctypeView.prototype.el = 'body.application';
@@ -470,8 +517,8 @@ window.require.register("views/app_view", function(exports, require, module) {
     __extends(DocumentsCollection, _super);
 
     function DocumentsCollection() {
-      _ref2 = DocumentsCollection.__super__.constructor.apply(this, arguments);
-      return _ref2;
+      _ref1 = DocumentsCollection.__super__.constructor.apply(this, arguments);
+      return _ref1;
     }
 
     DocumentsCollection.prototype.el = 'body.application';
@@ -490,8 +537,8 @@ window.require.register("views/app_view", function(exports, require, module) {
     __extends(DocumentView, _super);
 
     function DocumentView() {
-      _ref3 = DocumentView.__super__.constructor.apply(this, arguments);
-      return _ref3;
+      _ref2 = DocumentView.__super__.constructor.apply(this, arguments);
+      return _ref2;
     }
 
     DocumentView.prototype.el = 'body.application';
