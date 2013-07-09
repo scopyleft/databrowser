@@ -8,8 +8,9 @@ class exports.DocTypeCollection extends Backbone.Collection
     constructor: (@view, @options) ->
         super(@options)
 
-        @url = "databrowser/#doctype/"
+        @url = "doctypes/"
         console.log @url
 
     parse: (response) ->
         response.rows
+        console.log response.rows

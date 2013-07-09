@@ -18,6 +18,7 @@ class exports.HomeView extends BaseView
 
     afterRender: ->
         console.log "write more code here !"
+        console.log @doctypes.toJSON()
 
 
 # Displaying a given doctype and associated documents

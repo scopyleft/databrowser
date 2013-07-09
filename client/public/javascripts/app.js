@@ -109,12 +109,13 @@ window.require.register("collections/doctypes", function(exports, require, modul
       this.view = view;
       this.options = options;
       DocTypeCollection.__super__.constructor.call(this, this.options);
-      this.url = "databrowser/#doctype/";
+      this.url = "doctypes/";
       console.log(this.url);
     }
 
     DocTypeCollection.prototype.parse = function(response) {
-      return response.rows;
+      response.rows;
+      return console.log(response.rows);
     };
 
     return DocTypeCollection;
@@ -356,7 +357,7 @@ window.require.register("models/doctype", function(exports, require, module) {
     }
 
     DocType.prototype.url = function() {
-      return "databrowser/#doctype/" + this.id;
+      return "doctypes/" + this.id;
     };
 
     DocType.prototype.parse = function(data) {
@@ -482,7 +483,8 @@ window.require.register("views/app_view", function(exports, require, module) {
     }
 
     HomeView.prototype.afterRender = function() {
-      return console.log("write more code here !");
+      console.log("write more code here !");
+      return console.log(this.doctypes.toJSON());
     };
 
     return HomeView;

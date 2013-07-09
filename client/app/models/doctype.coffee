@@ -9,7 +9,7 @@ class exports.DocType extends Backbone.Model
         @[property] = type[property] for property of type
 
     url: ->
-        "databrowser/#doctype/#{@id}"
+        "doctypes/#{@id}"
 
     # because the server sends a list on model/:id
     parse: (data) ->
