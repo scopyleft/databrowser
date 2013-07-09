@@ -343,7 +343,7 @@ window.require.register("views/templates/home", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div id="content"><h1>Data browser</h1><h2>Browse your data by document types, tags and keywords.</h2><ul><li><a href="https://github.com/scopyleft/databrowser">Repository of the app</a></li></ul></div>');
+  buf.push('<div class="layout-container"><div id="nav"><h2>Data browser\'s sidebar</h2></div><div id="content"><h1>Data browser</h1><h2>Browse your data by document types, tags and keywords.</h2><ul><li><a href="https://github.com/scopyleft/databrowser">Repository of the app</a></li></ul></div></div>');
   }
   return buf.join("");
   };
