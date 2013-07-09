@@ -93,6 +93,34 @@ window.require.register("application", function(exports, require, module) {
   };
   
 });
+window.require.register("collections/documents", function(exports, require, module) {
+  var Document,
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  Document = require("../models/document").Document;
+
+  exports.DocumentCollection = (function(_super) {
+    __extends(DocumentCollection, _super);
+
+    DocumentCollection.prototype.model = Document;
+
+    function DocumentCollection(view, doctypeId, options) {
+      this.view = view;
+      this.doctypeId = doctypeId;
+      this.options = options;
+      DocumentCollection.__super__.constructor.call(this, {
+        id: this.doctypeId
+      }, this.options);
+      this.url = "databrowser/" + this.doctypeId + "/tasks/";
+      console.log(this.url);
+    }
+
+    return DocumentCollection;
+
+  })(Backbone.Collection);
+  
+});
 window.require.register("initialize", function(exports, require, module) {
   var app;
 
@@ -279,12 +307,60 @@ window.require.register("lib/view_collection", function(exports, require, module
   })(BaseView);
   
 });
+window.require.register("models/doctype", function(exports, require, module) {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  exports.DocType = (function(_super) {
+    __extends(DocType, _super);
+
+    function DocType(type) {
+      var property;
+      DocType.__super__.constructor.apply(this, arguments);
+      for (property in type) {
+        this[property] = type[property];
+      }
+    }
+
+    DocType.prototype.url = function() {
+      return "doctype/" + this.id;
+    };
+
+    return DocType;
+
+  })(Backbone.Model);
+  
+});
+window.require.register("models/document", function(exports, require, module) {
+  var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
+
+  exports.Document = (function(_super) {
+    __extends(Document, _super);
+
+    function Document(doc) {
+      var property;
+      Document.__super__.constructor.apply(this, arguments);
+      for (property in doc) {
+        this[property] = doc[property];
+      }
+    }
+
+    Document.prototype.url = function() {
+      return "documents/" + this.id;
+    };
+
+    return Document;
+
+  })(Backbone.Model);
+  
+});
 window.require.register("router", function(exports, require, module) {
-  var AppView, Router, _ref,
+  var Router, views, _ref,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
-  AppView = require('views/app_view');
+  views = require('views/app_view');
 
   module.exports = Router = (function(_super) {
     __extends(Router, _super);
@@ -295,13 +371,35 @@ window.require.register("router", function(exports, require, module) {
     }
 
     Router.prototype.routes = {
-      '': 'main'
+      '': 'home',
+      'doctype/:doctypeId': 'doctype',
+      'doctype/:doctypeId/documents/': 'documents',
+      'doctype/:doctypeId/documents/:documentId': 'document'
     };
 
-    Router.prototype.main = function() {
-      var mainView;
-      mainView = new AppView();
-      return mainView.render();
+    Router.prototype.home = function() {
+      var homeView;
+      homeView = new views.HomeView();
+      return homeView.render();
+    };
+
+    Router.prototype.doctype = function(doctypeId) {
+      var doctypeView;
+      doctypeView = new views.DoctypeView();
+      doctypeView.populateData(doctypeId);
+      return doctypeView.render();
+    };
+
+    Router.prototype.documents = function(doctypeId) {
+      var documentsCollection;
+      documentsCollection = new views.DocumentsCollection();
+      return documentsCollection.render();
+    };
+
+    Router.prototype.document = function(doctypeId, documentId) {
+      var documentView;
+      documentView = new views.DocumentView();
+      return documentView.render();
     };
 
     return Router;
@@ -310,32 +408,135 @@ window.require.register("router", function(exports, require, module) {
   
 });
 window.require.register("views/app_view", function(exports, require, module) {
-  var AppView, BaseView, _ref,
+  var BaseView, DocType, Document, DocumentCollection, ViewCollection, _ref, _ref1, _ref2, _ref3,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   BaseView = require('../lib/base_view');
 
-  module.exports = AppView = (function(_super) {
-    __extends(AppView, _super);
+  ViewCollection = require('../lib/view_collection');
 
-    function AppView() {
-      _ref = AppView.__super__.constructor.apply(this, arguments);
+  DocType = require("../models/doctype").DocType;
+
+  DocumentCollection = require("../collections/documents").DocumentCollection;
+
+  Document = require("../models/document").Document;
+
+  exports.HomeView = (function(_super) {
+    __extends(HomeView, _super);
+
+    function HomeView() {
+      _ref = HomeView.__super__.constructor.apply(this, arguments);
       return _ref;
     }
 
-    AppView.prototype.el = 'body.application';
+    HomeView.prototype.el = 'body.application';
 
-    AppView.prototype.template = require('./templates/home');
+    HomeView.prototype.template = require('./templates/home');
 
-    AppView.prototype.afterRender = function() {
+    HomeView.prototype.afterRender = function() {
       return console.log("write more code here !");
     };
 
-    return AppView;
+    return HomeView;
+
+  })(BaseView);
+
+  exports.DoctypeView = (function(_super) {
+    __extends(DoctypeView, _super);
+
+    function DoctypeView() {
+      _ref1 = DoctypeView.__super__.constructor.apply(this, arguments);
+      return _ref1;
+    }
+
+    DoctypeView.prototype.el = 'body.application';
+
+    DoctypeView.prototype.template = require('./templates/doctype');
+
+    DoctypeView.prototype.afterRender = function() {
+      return console.log("write more code here !");
+    };
+
+    DoctypeView.prototype.populateData = function(id) {
+      return console.log(id);
+    };
+
+    return DoctypeView;
+
+  })(BaseView);
+
+  exports.DocumentsCollection = (function(_super) {
+    __extends(DocumentsCollection, _super);
+
+    function DocumentsCollection() {
+      _ref2 = DocumentsCollection.__super__.constructor.apply(this, arguments);
+      return _ref2;
+    }
+
+    DocumentsCollection.prototype.el = 'body.application';
+
+    DocumentsCollection.prototype.template = require('./templates/documents');
+
+    DocumentsCollection.prototype.afterRender = function() {
+      return console.log("write more code here !");
+    };
+
+    return DocumentsCollection;
+
+  })(ViewCollection);
+
+  exports.DocumentView = (function(_super) {
+    __extends(DocumentView, _super);
+
+    function DocumentView() {
+      _ref3 = DocumentView.__super__.constructor.apply(this, arguments);
+      return _ref3;
+    }
+
+    DocumentView.prototype.el = 'body.application';
+
+    DocumentView.prototype.template = require('./templates/document');
+
+    DocumentView.prototype.afterRender = function() {
+      return console.log("write more code here !");
+    };
+
+    return DocumentView;
 
   })(BaseView);
   
+});
+window.require.register("views/templates/doctype", function(exports, require, module) {
+  module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+  attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+  var buf = [];
+  with (locals || {}) {
+  var interp;
+  buf.push('<div id="nav"><h4>Your data types</h4><ul><li><a href="#" title="Doctype 1 infos">doctype 1</a></li><li><a href="#" title="Doctype 2 infos">doctype 2</a></li><li><a href="#" title="Doctype 3 infos">doctype 3</a></li></ul></div><div id="content"><h1>Data browser (doctype)</h1><h2>Doctype 1</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul><h2>Doctype 2</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul></div>');
+  }
+  return buf.join("");
+  };
+});
+window.require.register("views/templates/document", function(exports, require, module) {
+  module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+  attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+  var buf = [];
+  with (locals || {}) {
+  var interp;
+  }
+  return buf.join("");
+  };
+});
+window.require.register("views/templates/documents", function(exports, require, module) {
+  module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
+  attrs = attrs || jade.attrs; escape = escape || jade.escape; rethrow = rethrow || jade.rethrow; merge = merge || jade.merge;
+  var buf = [];
+  with (locals || {}) {
+  var interp;
+  }
+  return buf.join("");
+  };
 });
 window.require.register("views/templates/home", function(exports, require, module) {
   module.exports = function anonymous(locals, attrs, escape, rethrow, merge) {
@@ -343,7 +544,7 @@ window.require.register("views/templates/home", function(exports, require, modul
   var buf = [];
   with (locals || {}) {
   var interp;
-  buf.push('<div class="layout-container"><div id="nav"><h4>Your data types</h4><ul><li><a href="#" title="Doctype 1 infos">doctype 1</a></li><li><a href="#" title="Doctype 2 infos">doctype 2</a></li><li><a href="#" title="Doctype 3 infos">doctype 3</a></li></ul></div><div id="content"><h1>Data browser</h1><h2>Doctype 1</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul><h2>Doctype 2</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul></div></div>');
+  buf.push('<div id="nav"><h4>Your data types</h4><ul><li><a href="#doctype/doc1" title="Doctype 1 infos">doctype 1</a></li><li><a href="#" title="Doctype 2 infos">doctype 2</a></li><li><a href="#" title="Doctype 3 infos">doctype 3</a></li></ul></div><div id="content"><h1>Data browser (home)</h1><h2>Doctype 1</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul><h2>Doctype 2</h2><ul><li><a href="#">Document 1</a></li><li><a href="#">Document 2</a></li><li><a href="#">Document 3</a></li></ul></div>');
   }
   return buf.join("");
   };
