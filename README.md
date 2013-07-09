@@ -2,7 +2,10 @@
 
 Data browser allows you to browse your data stored on the Cozy platform.
 
-# Run
+
+# Install and run this app
+
+## On a development environment
 
 Clone this repository, install dependencies and run server (it requires Node.js
 and Coffee-script)
@@ -11,6 +14,18 @@ and Coffee-script)
     cd databrowser
     npm install
     coffee server
+
+Now open a browser at http://127.0.0.1:9250
+
+
+## In your CozyCloud
+
+Get to your CozyCloud apps page and in the "Install your app" window insert:
+
+    https://github.com/scopyleft/databrowser
+
+The app should get installed automatically.
+
 
 # About Cozy
 
@@ -21,6 +36,7 @@ efficiently your data while protecting your privacy without technical skills.
 
 More informations and hosting services on:
 http://cozycloud.cc
+
 
 # Definition of done
 
