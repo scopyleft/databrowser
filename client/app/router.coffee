@@ -6,7 +6,7 @@ module.exports = class Router extends Backbone.Router
         '': 'home'
         'doctype/:doctypeId': 'doctype'
         'doctype/:doctypeId/documents/': 'documents'
-        'doctype/:doctypeId/documents/:documentId': 'document'
+        'doctype/:doctypeId/document/:documentId': 'document'
 
     home: ->
         homeView = new views.HomeView()
@@ -17,6 +17,7 @@ module.exports = class Router extends Backbone.Router
         doctypeView.populateData doctypeId
         doctypeView.render()
 
+    # Routes below are not in use for now
     documents: (doctypeId) ->
         documentsCollection = new views.DocumentsCollection()
         documentsCollection.render()

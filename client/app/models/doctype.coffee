@@ -1,3 +1,5 @@
+
+# Storing a document type from any cozy application
 class exports.DocType extends Backbone.Model
 
     # Copy task properties to current model.
@@ -7,4 +9,8 @@ class exports.DocType extends Backbone.Model
         @[property] = type[property] for property of type
 
     url: ->
-        "doctype/#{@id}"
+        "databrowser/#doctype/#{@id}"
+
+    # because the server sends a list on model/:id
+    parse: (data) ->
+        return data.rows[0] if data.rows
