@@ -1,2 +1,2 @@
 exports.routes = (map) ->
-    map.get '/datatypes/', 'datatypes#all'
+    map.get '/doctypes/', 'doctypes#all'

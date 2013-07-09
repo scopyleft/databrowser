@@ -7,14 +7,14 @@ requests = []
 
 async = require 'async'
 
-returnDatatypes = (err, datatypes) ->
+returnDoctypes = (err, doctypes) ->
     if err
         console.log err
-        send error: "Retrieve datatypes failed.", 500
+        send error: "Retrieve doctypes failed.", 500
     else
-        send number: datatypes.length, rows: datatypes
+        send number: doctypes.length, rows: doctypes
 
 
 action 'all', ->
     client.post 'request/task/all/', {}, (error, request, response) ->
-        returnDatatypes error, response
+        returnDoctypes error, response
