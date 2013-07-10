@@ -180,6 +180,99 @@ dataCollection.push
     list: "29aba0e2c27d5406dcc05bc919001b1b"
     tags: ["super"]
 
+# Mail meta doctype document
+dataCollection.push
+    docType: "metaDoctype"
+    related: "Mail" # what doctype this document describes
+    displayName: "Mail"
+    identificationField: "subject"
+    fields: [
+        "mailbox":
+            displayName: "Boite mail"
+            description: "Le contenu de la tâche."
+        "idRemoteMailBox":
+            displayName: "ID boite distante"
+            description: "Usage interne."
+        "createdAt":
+            displayName: "Date de création"
+            description: "Date de création"
+        "dateValueOf":
+            displayName: "Date"
+            description: "Usage interne."
+        "date":
+            displayName: "Date"
+            description: "Usage interne."
+        "headersRaw":
+            displayName: "Entêtes brut"
+            description: "Usage interne."
+        "raw":
+            displayName: "Contenu brut"
+            description: "Usage interne."
+        "priority":
+            displayName: "Priorité"
+            description: "La priorité du mail."
+        "subject":
+            displayName: "Sujet"
+            description: "Le sujet du mail."
+        "from":
+            displayName: "Expéditeur"
+            description: "L'expéditeur du mail."
+        "to":
+            displayName: "Destinataire"
+            description: "Le destinataire du mail."
+        "cc":
+            displayName: "En copie"
+            description: "Destinataires en copie"
+        "text":
+            displayName: "Corps (text)"
+            description: "Corps du mail en version texte."
+        "html":
+            displayName: "Corps (html)"
+            description: "Corps du mail en version HTML."
+        "flags":
+            displayName: "Marqueur"
+            description: "?"
+        "read":
+            displayName: "Lu"
+            description: "Indique si le mail est lu ou pas."
+        "flagged":
+            displayName: "Marqué"
+            description: "?"
+        "hasAttachements":
+            displayName: "Pièces jointes"
+            description: "Indique si le mail a des pièces jointes"
+        "inReplyTo":
+            displayName: "En réponse à"
+            description: "Référence à un mail précédent."
+        "references":
+            displayName: "Référence"
+            description: "?"
+    ]
+# Mail documents
+dataCollection.push
+    docType: "Mail"
+    mailbox: "Encore une #super tâche"
+    idRemoteMailBox: ""
+    createdAt: "1373360693530"
+    dateValueOf: "1373360693530"
+    date: "1373360693530"
+    headersRaw: "?"
+    raw: "?"
+    priority: "0"
+    subject: "Sujet du mail"
+    from: "sample@test.com"
+    to: "sample2@test.com"
+    cc: "sample3@test.com"
+    text: "Un super texte"
+    html: "<p>Un super texte</p>"
+    flags: "?"
+    read: false
+    flagged: false
+    hasAttachements: false
+    inReplyTo: null
+    references: null
+
+
 # Request factory
 # Data are wrapped inside async requests.
 requestFactory = (doc) ->
