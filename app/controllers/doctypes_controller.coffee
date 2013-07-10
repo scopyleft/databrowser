@@ -9,7 +9,7 @@ async = require 'async'
 
 returnDoctypes = (err, doctypes) ->
     if err
-        console.log err
+        console.error err
         send error: "Retrieve doctypes failed.", 500
     else
         send number: doctypes.length, rows: doctypes
@@ -26,5 +26,4 @@ action 'all', ->
 action 'show', ->
     doctype = params.doctype
     client.post 'request/'+doctype+'/all/', {}, (error, request, response) ->
-        console.log response
         returnDoctypes error, response
